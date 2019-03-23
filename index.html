@@ -5,8 +5,59 @@
 </head>
 <body>
   <div id="root" class="root">
+    <div id="open-info" class="open-info">💝</div>
+    <div id="info" class="info">
+      <header>Telegram Coding Contest</header>
+      <i>(March 2019)</i>
+
+      <section>
+        <p>
+          Hello, my name is Igor!
+          <br />
+          I made this app for the Contest!
+        </p>
+        <center>❤️</center>
+      </section>
+      <section>
+        <p>
+            I am very grateful for the opportunity to participate in the contest!
+            I had much fun!
+        </p>
+        <center>😻</center>
+    </section>
+    <section>
+      <label>Some highlights of the app:</label>
+      <ul>
+        <li><em>0</em> dependencies</li>
+        <li>
+          Design is <em>responsive</em>!
+          <br/>
+          <i>(please, try browser, and various devices)</i>
+        </li>
+        <li>
+          Device <em>orientation</em> is also handled
+          <br/>
+          <i>(try changing orientation)</i></li>
+        <li>
+          ☀️<em>Day</em> and 🌚<em>Night</em> mode!
+          <br/>
+          <i>(as per requirement)</i></li>
+        <li>Animated chart scale changes</li>
+        <li>Both <em>mouse</em> and <em>touch</em> are supported</li>
+        <li>Tested in <em>Chrome v72</em> and on <em>Android</em> devices</li>
+        <li>No bundler, just es modules</li>
+        <li>With <em>Shadow DOM</em> and <em>CSS variables</em></li>
+        <li>The app respond to <em>resize</em></li>
+      </ul>
+    </section>
+    <section>
+      <a href="https://github.com/ggarek">me on github</a>
+    </section>
+    </div>
     <header class="charts-header">Followers</header>
-    <div id="charts" class="canvas-container">
+    <div id="charts-container" class="charts-container">
+      <div id="charts" class="canvas-container">
+      </div>
     </div>
 
     <div id="switch-theme" class="switch-theme">Switch</div>
@@ -233,9 +284,25 @@
       }
 
       .minimap-frame-handle {
-        width: 1.2rem;
+        width: 0.5rem;
 
         background: var(--frame-handle-background-color, rgba(190, 200, 210, 0.45));
+      }
+
+      .minimap-frame-handle {
+        position: relative;
+      }
+      .minimap-frame-handle::after {
+        content: '';
+        position: absolute;
+        width: 1rem;
+        height: 100%;
+      }
+      .minimap-frame-handle._left::after {
+        left: -1rem;
+      }
+      .minimap-frame-handle._right::after {
+        right: -1rem;
       }
 
       .minimap-frame::after {
@@ -270,9 +337,9 @@
       <div id="left-curtain" class="minimap-left-curtain"></div>
       <div id="right-curtain" class="minimap-right-curtain"></div>
       <div id="frame" class="minimap-frame">
-        <div id="left-handle" class="minimap-frame-handle"></div>
+        <div id="left-handle" class="minimap-frame-handle _left"></div>
         <div id="mid" class="minimap-frame-mid"></div>
-        <div id="right-handle" class="minimap-frame-handle"></div>
+        <div id="right-handle" class="minimap-frame-handle _right"></div>
       </div>
     </div>
   </template>
