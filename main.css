@@ -2,10 +2,10 @@ BODY {
   font-family: Arial, sans-serif;
 
   width: 100vw;
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -56,7 +56,7 @@ body._day {
 
 @media (orientation: landscape) {
   .root {
-    flex-direction: row;
+    flex-direction: column;
   }
 }
 
@@ -152,16 +152,26 @@ body._loaded .loader {
 .switch-theme {
   color: #55a7eb;
   text-align: center;
-  position: fixed;
+  padding: 0.6rem;
+  white-space: nowrap;
+}
+
+
+.chart-panel {
+  position: relative;
+  display: flex;
+  height: 100vh;
+  border-bottom: var(--border-color, rgba(14,14,14,0.05)) solid 1px;
 }
 
 @media (orientation: portrait) {
   .switch-theme {
     bottom: 1rem;
-    left: 50%;
-    transform: translate(-50%, 0);
-    padding: 0.5rem;
-    white-space: nowrap;
+  }
+
+  .chart-panel {
+    display: flex;
+    flex-direction: column;
   }
 }
 @media (orientation: landscape) {
@@ -170,8 +180,23 @@ body._loaded .loader {
     right: 0rem;
     bottom: 1rem;
   }
+
+
+  .chart-panel {
+    display: flex;
+    flex-direction: row;
+  }
 }
 
+.extra-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+tg-chart-switches {
+  flex-grow: 1;
+}
 
 body._night tg-chart-switches {
   --color: white;
@@ -280,4 +305,8 @@ body._night .info {
 
 .info i {
   font-size: 0.6rem;
+}
+
+tg-chart-panel {
+  position: relative;
 }

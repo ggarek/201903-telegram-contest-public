@@ -1,0 +1,1 @@
+customElements.define("tg-chart-panel",class extends HTMLElement{constructor(){super();const e=document.getElementById("tg-chart-panel").content;this.attachShadow({mode:"open"}).appendChild(e.cloneNode(!0))}});

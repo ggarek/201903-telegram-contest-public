@@ -5,67 +5,81 @@
 </head>
 <body>
   <div id="root" class="root">
-    <div id="open-info" class="open-info">💝</div>
-    <div id="info" class="info">
-      <header>Telegram Coding Contest</header>
-      <i>(March 2019)</i>
+  </div>
 
-      <section>
-        <p>
-          Hello, my name is Igor!
-          <br />
-          I made this app for the Contest!
-        </p>
-        <center>❤️</center>
-      </section>
-      <section>
-        <p>
-            I am very grateful for the opportunity to participate in the contest!
-            I had much fun!
-        </p>
-        <center>😻</center>
+  <div id="open-info" class="open-info">💝</div>
+  <div id="info" class="info">
+    <header>Telegram Coding Contest</header>
+    <i>(March 2019)</i>
+
+    <section>
+      <p>
+        Hello, my name is Igor!
+        <br />
+        I made this app for the Contest!
+      </p>
+      <center>❤️</center>
     </section>
     <section>
-      <label>Some highlights of the app:</label>
-      <ul>
-        <li><em>0</em> dependencies</li>
-        <li>
-          Design is <em>responsive</em>!
-          <br/>
-          <i>(please, try browser, and various devices)</i>
-        </li>
-        <li>
-          Device <em>orientation</em> is also handled
-          <br/>
-          <i>(try changing orientation)</i></li>
-        <li>
-          ☀️<em>Day</em> and 🌚<em>Night</em> mode!
-          <br/>
-          <i>(as per requirement)</i></li>
-        <li>Animated chart scale changes</li>
-        <li>Both <em>mouse</em> and <em>touch</em> are supported</li>
-        <li>Tested in <em>Chrome v72</em> and on <em>Android</em> devices</li>
-        <li>No bundler, just es modules</li>
-        <li>With <em>Shadow DOM</em> and <em>CSS variables</em></li>
-        <li>The app respond to <em>resize</em></li>
-      </ul>
-    </section>
-    <section>
-      <a href="https://github.com/ggarek">me on github</a>
-    </section>
-    </div>
-    <header class="charts-header">Followers</header>
-    <div id="charts-container" class="charts-container">
-      <div id="charts" class="canvas-container">
-      </div>
-    </div>
-
-    <div id="switch-theme" class="switch-theme">Switch</div>
+      <p>
+          I am very grateful for the opportunity to participate in the contest!
+          I had much fun!
+      </p>
+      <center>😻</center>
+  </section>
+  <section>
+    <label>Some highlights of the app:</label>
+    <ul>
+      <li><em>0</em> dependencies</li>
+      <li>
+        Design is <em>responsive</em>!
+        <br/>
+        <i>(please, try browser, and various devices)</i>
+      </li>
+      <li>
+        Device <em>orientation</em> is also handled
+        <br/>
+        <i>(try changing orientation)</i></li>
+      <li>
+        ☀️<em>Day</em> and 🌚<em>Night</em> mode!
+        <br/>
+        <i>(as per requirement)</i></li>
+      <li>Animated chart scale changes</li>
+      <li>Both <em>mouse</em> and <em>touch</em> are supported</li>
+      <li>Tested in <em>Chrome v72</em> and on <em>Android</em> devices</li>
+      <li>No bundler, just es modules</li>
+      <li>With <em>Shadow DOM</em> and <em>CSS variables</em></li>
+      <li>The app respond to <em>resize</em></li>
+    </ul>
+  </section>
+  <section>
+    <a href="https://github.com/ggarek">me on github</a>
+  </section>
   </div>
 
   <div id="loader" class="loader">
     <label>Loading</label>
   </div>
+
+  <template id="tg-chart-panel">
+    <style>
+      .charts-header {
+        position: absolute;
+        z-index: 1;
+        left: 20px;
+        top: 1rem;
+        font-size: 1.4rem;
+        font-weight: bold;
+      }
+    </style>
+    <slot name="header"></slot>
+    <div class="charts-container">
+      <slot name="charts"></slot>
+      <slot name="minimap"></slot>
+    </div>
+
+    <slot name="switch-theme"></slot>
+  </template>
 
   <script type="module" src="intersectionsTooltip.js"></script>
   <template id="tg-intersection-point">
@@ -88,7 +102,7 @@
         position: absolute;
 
         top: 2.5rem;
-        background: var(--background-color);
+        background: var(--background-color, red);
         border: 1px solid var(--border-color, rgba(14,14,14,0.15));
         border-radius: 7px;
         padding: 0.6rem 1rem;
@@ -136,9 +150,10 @@
     <style>
       .switches {
         display: inline-flex;
-        padding: 0.75rem;
+        padding: 0.5rem 0.75rem;
         font-size: 0.8rem;
         color: var(--color, rgba(0,0,0,0.85));
+        flex-flow: wrap;
       }
     </style>
     <section id="switches" class="switches">
@@ -149,10 +164,11 @@
       .chart-switch {
         border: 1px solid var(--border-color, rgba(14, 14, 14, 0.15));
         border-radius: 25px;
-        padding: 0.5rem;
+        padding: 0.2rem;
         display: flex;
         align-items: center;
-        margin-right: 0.75rem;
+        margin-right: 0.45rem;
+        margin-top: 0.45rem;
       }
 
       .chart-switch label {
