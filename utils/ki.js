@@ -1,0 +1,1 @@
+export const createAnimator=({get:t,set:e,duration:o,interpolation:n})=>{let r={started:0,from:null,to:null};return{set(a){r.from=t(),r.to=a,r.started=Date.now();const i=()=>{const t=(Date.now()-r.started)/o;if(t>1)return void(r.started=0);const a=n(r.from,r.to,t);e(a),window.requestAnimationFrame(i)};window.requestAnimationFrame(i)}}};

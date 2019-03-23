@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<head>
+  <link rel="stylesheet" href="main.css" />
+  <meta name="viewport" content="width=device-width, user-scalable=no">
+</head>
+<body>
+  <div id="root" class="root">
+    <header class="charts-header">Followers</header>
+    <div id="charts" class="canvas-container">
+    </div>
+
+    <div id="switch-theme" class="switch-theme">Switch</div>
+  </div>
+
+  <div id="loader" class="loader">
+    <label>Loading</label>
+  </div>
+
+  <script type="module" src="intersectionsTooltip.js"></script>
+  <template id="tg-intersection-point">
+    <style>
+      .point {
+        display: flex;
+        flex-direction: column;
+        padding-right: 1em;
+        min-width: 1.8rem;
+      }
+    </style>
+    <div id="point" class="point">
+      <span id="value" class="value"></span>
+      <span id="label" class="label"></span>
+    </div>
+  </template>
+  <template id="tg-intersections-tooltip">
+    <style>
+      .cursor-hint {
+        position: absolute;
+
+        top: 2.5rem;
+        background: var(--background-color);
+        border: 1px solid var(--border-color, rgba(14,14,14,0.15));
+        border-radius: 7px;
+        padding: 0.6rem 1rem;
+        font-size: 1rem;
+        box-shadow: 1px 1px 1px rgba(14,14,14,0.1);
+
+        display: none;
+
+        transform: translate(-50%, 0);
+        transition: left 30ms linear 0s;
+      }
+
+      .cursor-hint > header {
+        font-size: 0.9em;
+        white-space: nowrap;
+        min-width: 5.5rem;
+      }
+
+      .points {
+        display: flex;
+      }
+
+      .points > * {
+        padding-top: 0.5em;
+      }
+
+      .chart-name {
+        font-size: 0.75em;
+        line-height: 1.5em;
+      }
+
+      ._visible {
+        display: block;
+      }
+    </style>
+    <div id="cursor-hint" class="cursor-hint">
+      <header id="moment">Sat, Feb 24</header>
+      <div id="points" class="points">
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="chartSwitches.js"></script>
+  <template id="tg-chart-switches">
+    <style>
+      .switches {
+        display: inline-flex;
+        padding: 0.75rem;
+        font-size: 0.8rem;
+        color: var(--color, rgba(0,0,0,0.85));
+      }
+    </style>
+    <section id="switches" class="switches">
+    </section>
+  </template>
+  <template id="tg-chart-switch">
+    <style>
+      .chart-switch {
+        border: 1px solid var(--border-color, rgba(14, 14, 14, 0.15));
+        border-radius: 25px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        margin-right: 0.75rem;
+      }
+
+      .chart-switch label {
+        padding: 0 0.5rem;
+      }
+
+      .chart-switch .switch {
+        position: relative;
+        border-radius: 50px;
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid var(--marker-color, red);
+      }
+
+      .switch-clip {
+        border-radius: 50px;
+        overflow: hidden;
+      }
+
+      .switch::after {
+        content: '';
+        display: inline-block;
+        height: 8px;
+        width: 4px;
+        border-bottom: 2px solid white;
+        border-right: 2px solid white;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        opacity: 0;
+        transform: translate(-3px, -6.5px) rotate(45deg) scale(3);
+        transition: transform 300ms ease-in-out, opacity 250ms ease-in;
+      }
+
+      .switch::before {
+        content: '';
+        position: absolute;
+        top: -2rem;
+        left: -0.1rem;
+        width: 3rem;
+        height: 2rem;
+        background: transparent;
+        transform: scale(1);
+        transition: transform 300ms ease-in, background 300ms linear;
+
+        border-radius: 50px;
+      }
+
+      .switch.on::before {
+        transform: translate(0, 1.5rem) scale(2);
+        background: var(--marker-color, red);
+      }
+
+      .switch.on::after {
+        transform: translate(-3px, -6.5px) rotate(45deg) scale(1);
+        opacity: 1;
+      }
+
+      .ripple {
+        background-position: center;
+        transition: background 0.8s;
+      }
+      .ripple:hover {
+        background: white radial-gradient(circle, transparent 1%, white 1%) center/15000%;
+      }
+      .ripple:active {
+        background-color: rgba(0,0,0,0.1);
+        background-size: 100%;
+        transition: background 0s;
+      }
+    </style>
+    <div class="chart-switch">
+      <div class="switch-clip">
+        <div id="switch" class="switch on"></div>
+      </div>
+      <label id="title">Joined</label>
+    </div>
+  </template>
+
+  <template id="td-chart-switches">
+    <style>
+      .chart-switches {
+        display: inline-flex;
+        padding: 10px;
+        font-size: 0.8rem;
+        color: rgba(0,0,0,0.85);
+      }
+    </style>
+    <section class="chart-switches">
+      <div class="chart-switch">
+        <div class="switch-clip">
+          <div class="switch on"></div>
+        </div>
+        <label>Joined</label>
+      </div>
+      <div class="chart-switch">
+        <div class="switch-clip">
+          <div class="switch"></div>
+        </div>
+        <label>Left</label>
+      </div>
+    </section>
+  </template>
+
+  <script type="module" src="minimap.js"></script>
+  <template id="tg-minimap">
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      .minimap {
+        position: relative;
+        display: inline-block;
+      }
+
+      .minimap-frame {
+        position: absolute;
+        height: 100%;
+        top: 0;
+        right: 0;
+
+        width: 25vw;
+        display: flex;
+
+        border-color:  var(--frame-handle-background-color, rgba(190, 200, 210, 0.45));
+        border-width: 2px 0;
+        border-style: solid;
+      }
+
+      .minimap-frame-handle {
+        width: 1.2rem;
+
+        background: var(--frame-handle-background-color, rgba(190, 200, 210, 0.45));
+      }
+
+      .minimap-frame::after {
+        content: '';
+      }
+
+      .minimap-frame-mid {
+        flex-grow: 1;
+      }
+
+      .layer {
+        display: block;
+      }
+
+      .minimap-right-curtain,
+      .minimap-left-curtain {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        background: var(--curtain-background-color, rgba(100,120,200,.085));
+      }
+      .minimap-left-curtain {
+        left: 0;
+      }
+      .minimap-right-curtain {
+        right: 0;
+      }
+    </style>
+    <div id="minimap" class="minimap">
+      <div id="charts" class="minimap-layers">
+      </div>
+      <div id="left-curtain" class="minimap-left-curtain"></div>
+      <div id="right-curtain" class="minimap-right-curtain"></div>
+      <div id="frame" class="minimap-frame">
+        <div id="left-handle" class="minimap-frame-handle"></div>
+        <div id="mid" class="minimap-frame-mid"></div>
+        <div id="right-handle" class="minimap-frame-handle"></div>
+      </div>
+    </div>
+  </template>
+
+  <script type="module" src="main.js"></script>
+</body>

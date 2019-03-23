@@ -1,0 +1,1 @@
+export const extractPointerOrTouchOffset=e=>{if("clientX"in e&&"clientY"in e)return{x:e.clientX,y:e.clientY};if(e.changedTouches&&e.changedTouches.length>0){const n=e.changedTouches[0];return{x:n.clientX,y:n.clientY}}return null};export const isTouchEvent=e=>e instanceof TouchEvent||"changedTouches"in e;

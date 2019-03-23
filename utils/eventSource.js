@@ -1,0 +1,1 @@
+export const createEventSource=()=>{const e={};return{addEventListener:(t,n)=>{const c=e[t]=e[t]||[];c.includes(n)||c.push(n)},removeEventListener:(t,n)=>{const c=e[t];c&&0!==c.length&&(e[t]=c.filter(e=>e!==n))},dispatch:(t,n)=>{const c=e[t];c&&0!==c.length&&c.forEach(e=>e({value:n}))}}};

@@ -1,0 +1,1 @@
+export function createCanvas({width:t,height:e,dpi:i}){const s=document.createElement("canvas");return s.setAttribute("width",t*i),s.setAttribute("height",e*i),s.setAttribute("class","layer"),s.style.width=`${t}px`,s.style.height=`${e}px`,s.getContext("2d").scale(i,i),s}
